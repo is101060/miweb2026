@@ -8,6 +8,15 @@ interface Props {
 const { title, description = 'Sitio personal de Hugo', image, type = 'website' } = Astro.props;
 const siteUrl = 'https://hugomx.com';
 const ogImage = image ?? `${siteUrl}/og-default.png`;
+
+const pathname = Astro.url.pathname;
+const navLinks = [
+  { href: '/articles', label: 'Artículos' },
+  { href: '/stories',  label: 'Historias' },
+  { href: '/projects', label: 'Proyectos' },
+  { href: '/books',    label: 'Librero' },
+  { href: '/about',    label: 'Acerca de' },
+];
 ---
 
 <!doctype html>
@@ -42,17 +51,24 @@ const ogImage = image ?? `${siteUrl}/og-default.png`;
         document.documentElement.classList.add('dark');
       }
     </script>
+
   </head>
   <body class="bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-200 text-[18px]">
     <header class="max-w-[800px] mx-auto px-4 py-8 flex items-center justify-between">
       <a href="/" class="font-semibold text-gray-900 dark:text-gray-100 hover:text-accent transition-colors">Hugo</a>
       <div class="flex items-center gap-6">
-        <nav class="flex gap-6 text-sm text-gray-500 dark:text-gray-400">
-          <a href="/articles" class="hover:text-accent transition-colors">Artículos</a>
-          <a href="/stories" class="hover:text-accent transition-colors">Historias</a>
-          <a href="/projects" class="hover:text-accent transition-colors">Proyectos</a>
-          <a href="/books" class="hover:text-accent transition-colors">Librero</a>
-          <a href="/about" class="hover:text-accent transition-colors">Acerca de</a>
+        <nav class="flex gap-6 text-sm">
+          {navLinks.map(({ href, label }) => {
+            const isActive = pathname === href || pathname.startsWith(href + '/');
+            return (
+              <a
+                href={href}
+                class={`transition-colors ${isActive ? 'text-accent font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-accent'}`}
+              >
+                {label}
+              </a>
+            );
+          })}
         </nav>
         <button id="theme-toggle" aria-label="Cambiar tema"
           class="text-gray-400 dark:text-gray-500 hover:text-accent dark:hover:text-accent transition-colors">
@@ -65,9 +81,11 @@ const ogImage = image ?? `${siteUrl}/og-default.png`;
         </button>
       </div>
     </header>
+
     <main class="max-w-[800px] mx-auto px-4 py-12">
       <slot />
     </main>
+
     <footer class="max-w-[800px] mx-auto px-4 py-8 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-sm text-gray-400">
       <span>© {new Date().getFullYear()} Hugo</span>
       <nav class="flex gap-4">
@@ -76,11 +94,32 @@ const ogImage = image ?? `${siteUrl}/og-default.png`;
         <a href="https://substack.com/@tu-usuario" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">Substack</a>
       </nav>
     </footer>
+
+    <!-- Botón volver arriba -->
+    <button
+      id="back-to-top"
+      aria-label="Volver arriba"
+      class="fixed bottom-6 right-6 w-10 h-10 rounded-full bg-accent text-white shadow-lg flex items-center justify-center opacity-0 translate-y-2 transition-all duration-200 pointer-events-none z-50 hover:opacity-90"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m18 15-6-6-6 6"/>
+      </svg>
+    </button>
+
     <script is:inline>
       document.getElementById('theme-toggle').addEventListener('click', () => {
         const isDark = document.documentElement.classList.toggle('dark');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
       });
+
+      const btn = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        const show = window.scrollY > 400;
+        btn.style.opacity = show ? '1' : '0';
+        btn.style.transform = show ? 'translateY(0)' : 'translateY(8px)';
+        btn.style.pointerEvents = show ? 'auto' : 'none';
+      });
+      btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
   </body>
 </html>

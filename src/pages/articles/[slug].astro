@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import CategoryBadge from '../../components/CategoryBadge.astro';
 import NewsletterCTA from '../../components/NewsletterCTA.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -64,6 +65,8 @@ const fmtShort = (date: Date) =>
         />
       </figure>
     )}
+
+    <TableOfContents />
 
     <!-- 3. Cuerpo con tipografía mejorada -->
     <div class="prose dark:prose-invert max-w-none

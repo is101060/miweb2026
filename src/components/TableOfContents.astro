@@ -1,0 +1,44 @@
+---
+// Se genera client-side desde los headings del DOM
+---
+
+<nav id="toc" class="hidden xl:block fixed top-32 left-[calc(50%+420px)] w-52 text-sm">
+  <p class="text-xs font-medium tracking-widest uppercase text-gray-400 mb-3">En este artículo</p>
+  <ul id="toc-list" class="space-y-2"></ul>
+</nav>
+
+<script is:inline>
+  const article = document.querySelector('article');
+  const tocList = document.getElementById('toc-list');
+  const toc = document.getElementById('toc');
+
+  if (article && tocList) {
+    const headings = article.querySelectorAll('h2, h3');
+    if (headings.length < 2) { toc.classList.add('hidden'); }
+
+    headings.forEach((h, i) => {
+      if (!h.id) h.id = `heading-${i}`;
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${h.id}`;
+      a.textContent = h.textContent;
+      a.className = `block text-gray-400 hover:text-accent transition-colors leading-snug ${h.tagName === 'H3' ? 'pl-3 text-xs' : ''}`;
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    // Resaltar heading activo
+    const links = tocList.querySelectorAll('a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          links.forEach((l) => l.classList.remove('text-accent', '!text-accent'));
+          const active = tocList.querySelector(`a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('text-accent');
+        }
+      });
+    }, { rootMargin: '0px 0px -70% 0px' });
+
+    headings.forEach((h) => observer.observe(h));
+  }
+</script>
