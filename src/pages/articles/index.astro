@@ -9,12 +9,34 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft))
 
 const fmt = (date: Date) =>
   date.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
+
+const articlesJson = JSON.stringify(articles.map((a) => ({
+  id: a.id,
+  title: a.data.title,
+  description: a.data.description,
+  category: a.data.category,
+  date: fmt(a.data.date),
+  image: a.data.image ?? null,
+})));
 ---
 
 <Layout title="Artículos — Hugo">
   <div class="flex items-center justify-between mb-6">
     <h1 class="font-serif text-3xl font-semibold text-gray-900 dark:text-gray-100">Artículos</h1>
-    <span class="text-sm text-gray-400">{articles.length} artículos</span>
+    <span class="text-sm text-gray-400" id="count">{articles.length} artículos</span>
+  </div>
+
+  <!-- Buscador -->
+  <div class="relative mb-6">
+    <input
+      id="search"
+      type="search"
+      placeholder="Buscar artículos..."
+      class="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-accent transition-colors"
+    />
+    <svg class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
   </div>
 
   <!-- Filtro por categoría -->
@@ -28,9 +50,9 @@ const fmt = (date: Date) =>
     ))}
   </div>
 
-  <ul class="space-y-2">
+  <ul class="space-y-2" id="articles-list">
     {articles.map((a) => (
-      <li class="border-b border-gray-100 dark:border-gray-800 last:border-0 py-4">
+      <li class="border-b border-gray-100 dark:border-gray-800 last:border-0 py-4" data-title={a.data.title.toLowerCase()} data-description={a.data.description.toLowerCase()}>
         <a href={`/articles/${a.id}`} class="flex items-center gap-4 group">
           <div class="shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
             {a.data.image
@@ -52,4 +74,26 @@ const fmt = (date: Date) =>
       </li>
     ))}
   </ul>
+
+  <p id="no-results" class="hidden text-center text-gray-400 py-12">No se encontraron artículos.</p>
 </Layout>
+
+<script is:inline>
+  const input = document.getElementById('search');
+  const list = document.getElementById('articles-list');
+  const items = list.querySelectorAll('li');
+  const count = document.getElementById('count');
+  const noResults = document.getElementById('no-results');
+
+  input.addEventListener('input', () => {
+    const q = input.value.toLowerCase().trim();
+    let visible = 0;
+    items.forEach((item) => {
+      const match = !q || item.dataset.title.includes(q) || item.dataset.description.includes(q);
+      item.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    count.textContent = `${visible} artículos`;
+    noResults.classList.toggle('hidden', visible > 0);
+  });
+</script>

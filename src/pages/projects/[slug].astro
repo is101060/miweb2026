@@ -1,0 +1,89 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const statusStyle = {
+  'activo':    'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
+  'terminado': 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400',
+  'en pausa':  'bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300',
+};
+---
+
+<Layout title={`${project.data.title} — Hugo`} description={project.data.description} image={project.data.image}>
+  <Breadcrumb crumbs={[{ label: 'Proyectos', href: '/projects' }, { label: project.data.title }]} />
+
+  <article>
+    <header class="mb-10">
+      <div class="flex items-start justify-between gap-4 mb-4">
+        <span class="text-4xl">{project.data.emoji}</span>
+        {project.data.status && (
+          <span class={`text-xs font-medium px-2.5 py-1 rounded-full ${statusStyle[project.data.status]}`}>
+            {project.data.status}
+          </span>
+        )}
+      </div>
+
+      <h1 class="font-serif text-4xl font-semibold mb-3 text-gray-900 dark:text-gray-100 leading-tight">
+        {project.data.title}
+      </h1>
+      <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed mb-5">
+        {project.data.description}
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4">
+        {project.data.stack && (
+          <div class="flex flex-wrap gap-2">
+            {project.data.stack.map((tech) => (
+              <span class="text-xs font-mono bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2.5 py-1 rounded-md">
+                {tech}
+              </span>
+            ))}
+          </div>
+        )}
+        {project.data.url && (
+          <a href={project.data.url} target="_blank" rel="noopener noreferrer"
+            class="text-sm text-accent hover:underline font-medium ml-auto shrink-0">
+            Ver repositorio →
+          </a>
+        )}
+      </div>
+
+      <div class="mt-6 h-px bg-gradient-to-r from-accent/60 to-transparent"></div>
+    </header>
+
+    {project.data.image && (
+      <figure class="mb-10 -mx-4 sm:mx-0">
+        <img
+          src={project.data.image}
+          alt={project.data.title}
+          class="w-full rounded-none sm:rounded-xl object-cover max-h-80"
+        />
+      </figure>
+    )}
+
+    <div class="prose dark:prose-invert max-w-none
+      prose-headings:font-serif prose-headings:font-semibold prose-headings:text-gray-900 dark:prose-headings:text-gray-100
+      prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
+      prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+      prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-[1.85] prose-p:text-[1.05rem]
+      prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-a:font-medium
+      prose-strong:text-gray-900 dark:prose-strong:text-gray-100
+      prose-code:text-[0.875rem] prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:text-accent prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
+      prose-pre:bg-gray-950 prose-pre:text-gray-100 prose-pre:rounded-xl prose-pre:text-sm
+      prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:leading-relaxed">
+      <Content />
+    </div>
+  </article>
+</Layout>

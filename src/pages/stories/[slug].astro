@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -30,10 +31,8 @@ const fmtShort = (date: Date) =>
   date.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
 ---
 
-<Layout title={`${story.data.title} — Hugo`} description={story.data.description}>
-  <a href="/stories" class="text-sm text-gray-400 hover:text-accent transition-colors mb-12 inline-block">
-    ← Mis Historias
-  </a>
+<Layout title={`${story.data.title} — Hugo`} description={story.data.description} image={story.data.image}>
+  <Breadcrumb crumbs={[{ label: 'Mis Historias', href: '/stories' }, { label: story.data.title }]} />
 
   <article>
     <header class="mb-10">

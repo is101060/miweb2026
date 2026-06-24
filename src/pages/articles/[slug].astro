@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import CategoryBadge from '../../components/CategoryBadge.astro';
 import NewsletterCTA from '../../components/NewsletterCTA.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -32,10 +33,8 @@ const fmtShort = (date: Date) =>
   date.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
 ---
 
-<Layout title={`${article.data.title} — Hugo`} description={article.data.description}>
-  <a href="/articles" class="text-sm text-gray-400 hover:text-accent transition-colors mb-12 inline-block">
-    ← Artículos
-  </a>
+<Layout title={`${article.data.title} — Hugo`} description={article.data.description} image={article.data.image} type="article">
+  <Breadcrumb crumbs={[{ label: 'Artículos', href: '/articles' }, { label: article.data.title }]} />
 
   <article>
     <!-- 1. Header visual -->

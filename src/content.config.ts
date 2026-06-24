@@ -38,4 +38,18 @@ const bookReviews = defineCollection({
   }),
 });
 
-export const collections = { articles, stories, bookReviews };
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    tag: z.string(),
+    emoji: z.string(),
+    url: z.string().optional(),
+    image: z.string().optional(),
+    stack: z.array(z.string()).optional(),
+    status: z.enum(['activo', 'terminado', 'en pausa']).optional(),
+  }),
+});
+
+export const collections = { articles, stories, bookReviews, projects };

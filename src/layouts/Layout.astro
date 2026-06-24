@@ -2,8 +2,12 @@
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  type?: 'website' | 'article';
 }
-const { title, description = 'Sitio personal' } = Astro.props;
+const { title, description = 'Sitio personal de Hugo', image, type = 'website' } = Astro.props;
+const siteUrl = 'https://hugomx.com';
+const ogImage = image ?? `${siteUrl}/og-default.png`;
 ---
 
 <!doctype html>
@@ -13,6 +17,22 @@ const { title, description = 'Sitio personal' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content="Hugo" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet" />
@@ -24,7 +44,7 @@ const { title, description = 'Sitio personal' } = Astro.props;
     </script>
   </head>
   <body class="bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-200 text-[18px]">
-    <header class="max-w-2xl mx-auto px-4 py-8 flex items-center justify-between">
+    <header class="max-w-[800px] mx-auto px-4 py-8 flex items-center justify-between">
       <a href="/" class="font-semibold text-gray-900 dark:text-gray-100 hover:text-accent transition-colors">Hugo</a>
       <div class="flex items-center gap-6">
         <nav class="flex gap-6 text-sm text-gray-500 dark:text-gray-400">
@@ -45,10 +65,10 @@ const { title, description = 'Sitio personal' } = Astro.props;
         </button>
       </div>
     </header>
-    <main class="max-w-2xl mx-auto px-4 py-12">
+    <main class="max-w-[800px] mx-auto px-4 py-12">
       <slot />
     </main>
-    <footer class="max-w-2xl mx-auto px-4 py-8 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-sm text-gray-400">
+    <footer class="max-w-[800px] mx-auto px-4 py-8 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-sm text-gray-400">
       <span>© {new Date().getFullYear()} Hugo</span>
       <nav class="flex gap-4">
         <a href="https://linkedin.com/in/tu-usuario" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">LinkedIn</a>

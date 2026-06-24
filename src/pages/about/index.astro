@@ -1,21 +1,80 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const timeline = [
+  { year: '2024 — hoy', role: '[Tu rol actual]', place: '[Empresa o proyecto]', description: 'Describe qué haces actualmente.' },
+  { year: '2021 — 2024', role: '[Rol anterior]', place: '[Empresa]', description: 'Describe qué hacías en este puesto.' },
+  { year: '2018 — 2021', role: '[Primer rol]', place: '[Empresa]', description: 'Cómo empezaste en tu área.' },
+];
+
+const interests = ['Tecnología', 'Diseño', 'Libros', 'Software', 'Escritura', 'Música'];
 ---
 
-<Layout title="Acerca de — Hugo López">
-  <h1 class="font-serif text-3xl font-semibold mb-8 text-gray-900 dark:text-gray-100">Acerca de</h1>
-  <div class="space-y-5 text-gray-700 dark:text-gray-300 leading-relaxed">
-    <p>
-      Hola, soy Hugo. Trabajo en [tu área o rol]. Me interesa [temas que te apasionan].
-    </p>
-    <p>
-      Actualmente [qué estás haciendo ahora: trabajo, proyecto, ciudad]. Antes trabajé en [experiencia relevante].
-    </p>
-    <p>
-      Escribo sobre lo que aprendo en mi trabajo y en proyectos personales. Puedes encontrar mis artículos <a href="/articles" class="text-accent hover:underline">aquí</a>.
-    </p>
-    <p>
-      Si quieres ponerte en contacto, escríbeme por cualquiera de mis redes sociales.
-    </p>
-  </div>
+<Layout title="Acerca de — Hugo" description="Quién es Hugo y en qué trabaja.">
+  <h1 class="font-serif text-4xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Acerca de</h1>
+  <p class="text-gray-500 dark:text-gray-400 text-lg leading-relaxed mb-16 max-w-prose">
+    Hola, soy Hugo. Trabajo en [tu área o rol]. Me interesa la intersección entre tecnología, diseño y las personas que los usan.
+  </p>
+
+  <!-- Actualmente -->
+  <section class="mb-16">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-1 h-6 bg-accent rounded-full"></div>
+      <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Actualmente</h2>
+    </div>
+    <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+      <li class="flex gap-3"><span class="text-accent shrink-0">→</span> Trabajando en [proyecto o empresa actual]</li>
+      <li class="flex gap-3"><span class="text-accent shrink-0">→</span> Leyendo <em>El problema de los tres cuerpos</em> de Liu Cixin</li>
+      <li class="flex gap-3"><span class="text-accent shrink-0">→</span> Aprendiendo [algo que estás aprendiendo]</li>
+      <li class="flex gap-3"><span class="text-accent shrink-0">→</span> Viviendo en [ciudad]</li>
+    </ul>
+  </section>
+
+  <!-- Trayectoria -->
+  <section class="mb-16">
+    <div class="flex items-center gap-3 mb-8">
+      <div class="w-1 h-6 bg-accent rounded-full"></div>
+      <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Trayectoria</h2>
+    </div>
+    <ol class="relative border-l border-gray-200 dark:border-gray-800 ml-3 space-y-10">
+      {timeline.map((item) => (
+        <li class="pl-8">
+          <div class="absolute -left-1.5 mt-1.5 w-3 h-3 rounded-full bg-accent"></div>
+          <span class="text-xs font-medium text-accent uppercase tracking-widest">{item.year}</span>
+          <h3 class="font-semibold text-gray-900 dark:text-gray-100 mt-1">{item.role}</h3>
+          <p class="text-sm text-gray-400 mb-1">{item.place}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Intereses -->
+  <section class="mb-16">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-1 h-6 bg-accent rounded-full"></div>
+      <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Intereses</h2>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      {interests.map((interest) => (
+        <span class="text-sm bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-3 py-1.5 rounded-full">
+          {interest}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section>
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-1 h-6 bg-accent rounded-full"></div>
+      <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Contacto</h2>
+    </div>
+    <p class="text-gray-600 dark:text-gray-400 mb-4">Puedes encontrarme en:</p>
+    <div class="flex gap-4 text-sm">
+      <a href="https://linkedin.com/in/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">LinkedIn</a>
+      <a href="https://instagram.com/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Instagram</a>
+      <a href="https://substack.com/@tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Substack</a>
+    </div>
+  </section>
 </Layout>
