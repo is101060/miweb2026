@@ -1,0 +1,122 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const stories = (await getCollection('stories'))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return stories.map((story, i) => ({
+    params: { slug: story.id },
+    props: {
+      story,
+      prev: stories[i + 1] ?? null,
+      next: stories[i - 1] ?? null,
+    },
+  }));
+}
+
+const { story, prev, next } = Astro.props;
+const { Content } = await render(story);
+
+const wordsPerMinute = 200;
+const wordCount = story.body?.split(/\s+/).length ?? 0;
+const readingTime = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const fmtShort = (date: Date) =>
+  date.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
+---
+
+<Layout title={`${story.data.title} — Hugo`} description={story.data.description}>
+  <a href="/stories" class="text-sm text-gray-400 hover:text-accent transition-colors mb-12 inline-block">
+    ← Mis Historias
+  </a>
+
+  <article>
+    <header class="mb-10">
+      <h1 class="font-serif text-4xl font-semibold mb-4 text-gray-900 dark:text-gray-100 leading-tight">
+        {story.data.title}
+      </h1>
+      <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed mb-5">
+        {story.data.description}
+      </p>
+      <div class="flex items-center gap-3 text-sm text-gray-400">
+        <time>{fmt(story.data.date)}</time>
+        <span>·</span>
+        <span>{readingTime} min de lectura</span>
+      </div>
+      <div class="mt-6 h-px bg-gradient-to-r from-accent/60 to-transparent"></div>
+    </header>
+
+    {story.data.image && (
+      <figure class="mb-10 -mx-4 sm:mx-0">
+        <img
+          src={story.data.image}
+          alt={story.data.imageAlt ?? story.data.title}
+          class="w-full rounded-none sm:rounded-xl object-cover max-h-80"
+        />
+      </figure>
+    )}
+
+    <div class="prose dark:prose-invert max-w-none
+      prose-headings:font-serif prose-headings:font-semibold prose-headings:text-gray-900 dark:prose-headings:text-gray-100
+      prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
+      prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+      prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-[1.85] prose-p:text-[1.05rem]
+      prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-a:font-medium
+      prose-strong:text-gray-900 dark:prose-strong:text-gray-100
+      prose-blockquote:border-l-accent prose-blockquote:text-gray-500 dark:prose-blockquote:text-gray-400 prose-blockquote:not-italic
+      prose-code:text-[0.875rem] prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:text-accent prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
+      prose-pre:bg-gray-950 prose-pre:text-gray-100 prose-pre:rounded-xl prose-pre:text-sm
+      prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:leading-relaxed">
+      <Content />
+    </div>
+
+    <div class="mt-16 pt-8 border-t border-gray-100 dark:border-gray-800">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-serif font-semibold text-lg shrink-0">
+          H
+        </div>
+        <div>
+          <p class="font-semibold text-gray-900 dark:text-gray-100 mb-1">Hugo</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-3">
+            Cosas personales y lo que hago. Si te gustó esta historia, puedes seguirme en redes.
+          </p>
+          <div class="flex gap-4 text-sm">
+            <a href="https://linkedin.com/in/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">LinkedIn</a>
+            <a href="https://instagram.com/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Instagram</a>
+            <a href="https://substack.com/@tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Substack</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {(prev || next) && (
+      <nav class="mt-10 grid gap-3 sm:grid-cols-2">
+        {prev ? (
+          <a href={`/stories/${prev.id}`}
+            class="group border border-gray-200 dark:border-gray-800 rounded-xl p-4 hover:border-accent transition-colors">
+            <span class="text-xs text-gray-400 mb-1 block">← Anterior</span>
+            <span class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-accent transition-colors line-clamp-2">
+              {prev.data.title}
+            </span>
+            <span class="text-xs text-gray-400 mt-1 block">{fmtShort(prev.data.date)}</span>
+          </a>
+        ) : <div />}
+        {next && (
+          <a href={`/stories/${next.id}`}
+            class="group border border-gray-200 dark:border-gray-800 rounded-xl p-4 hover:border-accent transition-colors sm:text-right">
+            <span class="text-xs text-gray-400 mb-1 block">Siguiente →</span>
+            <span class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-accent transition-colors line-clamp-2">
+              {next.data.title}
+            </span>
+            <span class="text-xs text-gray-400 mt-1 block">{fmtShort(next.data.date)}</span>
+          </a>
+        )}
+      </nav>
+    )}
+  </article>
+</Layout>

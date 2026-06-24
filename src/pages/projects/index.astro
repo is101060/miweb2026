@@ -1,0 +1,47 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const projects = [
+  {
+    name: 'Proyecto uno',
+    description: 'Descripción del proyecto. Qué hace, qué problema resuelve y qué tecnologías usa.',
+    url: '#',
+    tag: 'Web',
+  },
+  {
+    name: 'Proyecto dos',
+    description: 'Descripción del proyecto. Qué hace, qué problema resuelve y qué tecnologías usa.',
+    url: '#',
+    tag: 'CLI',
+  },
+  {
+    name: 'Proyecto tres',
+    description: 'Descripción del proyecto. Qué hace, qué problema resuelve y qué tecnologías usa.',
+    url: '#',
+    tag: 'API',
+  },
+  {
+    name: 'Proyecto cuatro',
+    description: 'Descripción del proyecto. Qué hace, qué problema resuelve y qué tecnologías usa.',
+    url: '#',
+    tag: 'Open source',
+  },
+];
+---
+
+<Layout title="Proyectos — Hugo López">
+  <h1 class="font-serif text-3xl font-semibold mb-10 text-gray-900 dark:text-gray-100">Proyectos</h1>
+  <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    {projects.map((p) => (
+      <li class="border border-gray-200 dark:border-gray-800 rounded-lg p-5 hover:border-accent dark:hover:border-accent transition-colors">
+        <a href={p.url} class="block">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="font-medium dark:text-gray-100">{p.name}</h2>
+            <span class="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 dark:text-gray-400 px-2 py-0.5 rounded-full">{p.tag}</span>
+          </div>
+          <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{p.description}</p>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Layout>

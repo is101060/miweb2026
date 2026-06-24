@@ -1,0 +1,24 @@
+---
+import type { Category } from '../content.config';
+
+interface Props {
+  category: Category;
+  link?: boolean;
+}
+
+const { category, link = false } = Astro.props;
+
+const styles: Record<Category, string> = {
+  'Tecnología': 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900',
+  'Diseño':     'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900',
+  'Personal':   'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900',
+};
+
+const slug = category.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const cls = `inline-block text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${styles[category]}`;
+---
+
+{link
+  ? <a href={`/articles/category/${slug}`} class={cls}>{category}</a>
+  : <span class={cls}>{category}</span>
+}

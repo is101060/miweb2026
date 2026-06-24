@@ -1,0 +1,123 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsletterCTA from '../components/NewsletterCTA.astro';
+import { getCollection } from 'astro:content';
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+
+const stories = (await getCollection('stories', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const projects = [
+  {
+    name: 'Proyecto uno',
+    description: 'Descripción del proyecto. Qué hace, qué problema resuelve.',
+    url: '#',
+    tag: 'Web',
+    emoji: '🌐',
+    color: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
+  },
+  {
+    name: 'Proyecto dos',
+    description: 'Descripción del proyecto. Qué hace, qué problema resuelve.',
+    url: '#',
+    tag: 'CLI',
+    emoji: '⚡',
+    color: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300',
+  },
+  {
+    name: 'Proyecto tres',
+    description: 'Descripción del proyecto. Qué hace, qué problema resuelve.',
+    url: '#',
+    tag: 'API',
+    emoji: '🔌',
+    color: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+  },
+  {
+    name: 'Proyecto cuatro',
+    description: 'Descripción del proyecto. Qué hace, qué problema resuelve.',
+    url: '#',
+    tag: 'Open source',
+    emoji: '🛠️',
+    color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
+  },
+];
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
+---
+
+<Layout title="Hugo" description="Sitio personal de Hugo">
+  <section class="mb-20">
+    <h1 class="font-serif text-5xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Hugo</h1>
+    <p class="text-gray-500 dark:text-gray-400 text-xl leading-relaxed max-w-prose mb-6">
+      Escribo sobre tecnología, diseño y software. Aquí comparto proyectos en los que trabajo y artículos sobre lo que aprendo.
+    </p>
+    <div class="flex gap-4 text-sm">
+      <a href="https://linkedin.com/in/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">LinkedIn</a>
+      <a href="https://instagram.com/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Instagram</a>
+      <a href="https://substack.com/@tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Substack</a>
+    </div>
+  </section>
+
+  <section class="mb-20">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Artículos recientes</h2>
+      <a href="/articles" class="text-sm text-accent hover:underline">Ver todos →</a>
+    </div>
+    <ul class="space-y-1">
+      {articles.map((a) => (
+        <li class="flex items-start justify-between gap-4 py-4 border-b border-gray-100 dark:border-gray-800 last:border-0">
+          <a href={`/articles/${a.id}`} class="text-gray-800 dark:text-gray-200 hover:text-accent transition-colors">
+            {a.data.title}
+          </a>
+          <span class="text-sm text-gray-400 shrink-0">{fmt(a.data.date)}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mb-20">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Proyectos</h2>
+      <a href="/projects" class="text-sm text-accent hover:underline">Ver todos →</a>
+    </div>
+    <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {projects.map((p) => (
+        <li class="border border-gray-200 dark:border-gray-800 rounded-xl p-5 hover:border-accent dark:hover:border-accent hover:shadow-sm transition-all">
+          <a href={p.url} class="block h-full">
+            <div class="flex items-start justify-between mb-3">
+              <span class="text-2xl">{p.emoji}</span>
+              <span class={`text-xs font-medium px-2 py-0.5 rounded-full ${p.color}`}>{p.tag}</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-1">{p.name}</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{p.description}</p>
+            <span class="text-xs text-accent font-medium">Ver proyecto →</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mb-20">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Mis Historias</h2>
+      <a href="/stories" class="text-sm text-accent hover:underline">Ver todas →</a>
+    </div>
+    <ul class="space-y-1">
+      {stories.map((s) => (
+        <li class="flex items-start justify-between gap-4 py-4 border-b border-gray-100 dark:border-gray-800 last:border-0">
+          <a href={`/stories/${s.id}`} class="text-gray-800 dark:text-gray-200 hover:text-accent transition-colors">
+            {s.data.title}
+          </a>
+          <span class="text-sm text-gray-400 shrink-0">{fmt(s.data.date)}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <NewsletterCTA />
+</Layout>

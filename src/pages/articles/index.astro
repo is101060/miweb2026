@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CategoryBadge from '../../components/CategoryBadge.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORIES } from '../../content.config';
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
+---
+
+<Layout title="Artículos — Hugo">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="font-serif text-3xl font-semibold text-gray-900 dark:text-gray-100">Artículos</h1>
+    <span class="text-sm text-gray-400">{articles.length} artículos</span>
+  </div>
+
+  <!-- Filtro por categoría -->
+  <div class="flex gap-2 mb-10 flex-wrap">
+    <a href="/articles"
+      class="text-xs font-medium px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-accent hover:text-accent transition-colors">
+      Todos
+    </a>
+    {CATEGORIES.map((cat) => (
+      <CategoryBadge category={cat} link />
+    ))}
+  </div>
+
+  <ul class="space-y-2">
+    {articles.map((a) => (
+      <li class="border-b border-gray-100 dark:border-gray-800 last:border-0 py-4">
+        <a href={`/articles/${a.id}`} class="flex items-center gap-4 group">
+          <div class="shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+            {a.data.image
+              ? <img src={a.data.image} alt={a.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              : <div class="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600 text-xl">✦</div>
+            }
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1">
+              <CategoryBadge category={a.data.category} />
+              <span class="text-xs text-gray-400">{fmt(a.data.date)}</span>
+            </div>
+            <p class="text-gray-800 dark:text-gray-200 group-hover:text-accent transition-colors font-medium truncate">
+              {a.data.title}
+            </p>
+            <p class="text-sm text-gray-400 mt-0.5 truncate">{a.data.description}</p>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Layout>

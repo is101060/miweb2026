@@ -1,0 +1,40 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const stories = (await getCollection('stories', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
+---
+
+<Layout title="Mis Historias — Hugo">
+  <div class="flex items-center justify-between mb-3">
+    <h1 class="font-serif text-3xl font-semibold text-gray-900 dark:text-gray-100">Mis Historias</h1>
+    <span class="text-sm text-gray-400">{stories.length} historias</span>
+  </div>
+  <p class="text-gray-500 dark:text-gray-400 mb-10">Cosas personales, lo que hago, lo que vivo.</p>
+
+  <ul class="space-y-2">
+    {stories.map((s) => (
+      <li class="border-b border-gray-100 dark:border-gray-800 last:border-0 py-4">
+        <a href={`/stories/${s.id}`} class="flex items-center gap-4 group">
+          <div class="shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+            {s.data.image
+              ? <img src={s.data.image} alt={s.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              : <div class="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600 text-xl">✦</div>
+            }
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="text-xs text-gray-400 mb-1 block">{fmt(s.data.date)}</span>
+            <p class="text-gray-800 dark:text-gray-200 group-hover:text-accent transition-colors font-medium truncate">
+              {s.data.title}
+            </p>
+            <p class="text-sm text-gray-400 mt-0.5 truncate">{s.data.description}</p>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Layout>
