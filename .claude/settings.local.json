@@ -13,7 +13,8 @@
       "mcp__Claude_in_Chrome__tabs_context_mcp",
       "Bash(curl -s http://localhost:4321/articles/primer-articulo)",
       "Bash(curl -s -I http://localhost:4321/articles/primer-articulo)",
-      "Bash(npx astro *)"
+      "Bash(npx astro *)",
+      "Bash(curl -s http://localhost:4321/ideas/edicion-005)"
     ]
   }
 }

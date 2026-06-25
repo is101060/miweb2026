@@ -5,9 +5,8 @@ import { getCollection } from 'astro:content';
 const projects = await getCollection('projects');
 
 const hardcoded = [
-  { name: 'Proyecto dos', description: 'Descripción del proyecto. Qué hace, qué problema resuelve y qué tecnologías usa.', tag: 'CLI', emoji: '⚡', slug: null },
-  { name: 'Proyecto tres', description: 'Descripción del proyecto. Qué hace, qué problema resuelve y qué tecnologías usa.', tag: 'API', emoji: '🔌', slug: null },
-  { name: 'Proyecto cuatro', description: 'Descripción del proyecto. Qué hace, qué problema resuelve y qué tecnologías usa.', tag: 'Open source', emoji: '🛠️', slug: null },
+  { name: 'Proyecto dos', description: 'Descripción del proyecto. Qué hace, qué problema resuelve y qué tecnologías usa.', tag: 'CLI', emoji: '⚡', slug: null, url: null },
+  { name: 'Proyecto tres', description: 'Descripción del proyecto. Qué hace, qué problema resuelve y qué tecnologías usa.', tag: 'API', emoji: '🔌', slug: null, url: null },
 ];
 
 const tagColor: Record<string, string> = {
@@ -15,12 +14,26 @@ const tagColor: Record<string, string> = {
   'CLI':         'bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300',
   'API':         'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
   'Open source': 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
+  'Newsletter':  'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
 };
 ---
 
 <Layout title="Proyectos — Hugo">
   <h1 class="font-serif text-3xl font-semibold mb-10 text-gray-900 dark:text-gray-100">Proyectos</h1>
   <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
+    <!-- 5 ideas primero -->
+    <li class="border border-gray-200 dark:border-gray-800 rounded-xl p-5 hover:border-accent dark:hover:border-accent hover:shadow-sm transition-all">
+      <a href="/ideas" class="block h-full">
+        <div class="flex items-start justify-between mb-3">
+          <span class="text-2xl">💡</span>
+          <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300">Newsletter</span>
+        </div>
+        <h2 class="font-semibold text-gray-900 dark:text-gray-100 mb-1">5 ideas</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4">Cada semana comparto cinco cosas que encontré interesantes: artículos, herramientas, videos e ideas.</p>
+        <span class="text-xs text-accent font-medium">Ver ediciones →</span>
+      </a>
+    </li>
 
     {projects.map((p) => (
       <li class="border border-gray-200 dark:border-gray-800 rounded-xl p-5 hover:border-accent dark:hover:border-accent hover:shadow-sm transition-all">

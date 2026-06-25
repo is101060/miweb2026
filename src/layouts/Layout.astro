@@ -7,12 +7,11 @@ interface Props {
 }
 const { title, description = 'Sitio personal de Hugo', image, type = 'website' } = Astro.props;
 const siteUrl = 'https://hugomx.com';
-const ogImage = image ?? `${siteUrl}/og-default.png`;
+const ogImage = image ?? `${siteUrl}/og-default.svg`;
 
 const pathname = Astro.url.pathname;
 const navLinks = [
   { href: '/articles', label: 'Artículos' },
-  { href: '/ideas',    label: '5 ideas' },
   { href: '/stories',  label: 'Historias' },
   { href: '/projects', label: 'Proyectos' },
   { href: '/books',    label: 'Librero' },
@@ -27,6 +26,9 @@ const navLinks = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
@@ -53,35 +55,57 @@ const navLinks = [
         document.documentElement.classList.add('dark');
       }
     </script>
-
   </head>
   <body class="bg-[#fafafa] dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-200 text-[18px]">
-    <header class="max-w-[800px] mx-auto px-4 py-8 flex items-center justify-between">
-      <a href="/" class="font-semibold text-gray-900 dark:text-gray-100 hover:text-accent transition-colors">Hugo</a>
-      <div class="flex items-center gap-6">
-        <nav class="flex gap-6 text-sm">
-          {navLinks.map(({ href, label }) => {
-            const isActive = pathname === href || pathname.startsWith(href + '/');
-            return (
-              <a
-                href={href}
-                class={`transition-colors ${isActive ? 'text-accent font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-accent'}`}
-              >
-                {label}
-              </a>
-            );
-          })}
-        </nav>
-        <button id="theme-toggle" aria-label="Cambiar tema"
-          class="text-gray-400 dark:text-gray-500 hover:text-accent dark:hover:text-accent transition-colors">
-          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block">
-            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-          </svg>
-          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-          </svg>
-        </button>
+
+    <header class="max-w-[800px] mx-auto px-4 py-8">
+      <div class="flex items-center justify-between">
+        <a href="/" class="font-semibold text-gray-900 dark:text-gray-100 hover:text-accent transition-colors">Hugo</a>
+        <div class="flex items-center gap-4">
+          <!-- Nav desktop -->
+          <nav class="hidden md:flex gap-6 text-sm">
+            {navLinks.map(({ href, label }) => {
+              const isActive = pathname === href || pathname.startsWith(href + '/');
+              return (
+                <a href={href} class={`transition-colors ${isActive ? 'text-accent font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-accent'}`}>
+                  {label}
+                </a>
+              );
+            })}
+          </nav>
+          <!-- Theme toggle -->
+          <button id="theme-toggle" aria-label="Cambiar tema"
+            class="text-gray-400 dark:text-gray-500 hover:text-accent dark:hover:text-accent transition-colors">
+            <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block">
+              <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+            </svg>
+            <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+          </button>
+          <!-- Hamburger mobile -->
+          <button id="menu-toggle" aria-label="Abrir menú" class="md:hidden text-gray-500 dark:text-gray-400 hover:text-accent transition-colors">
+            <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+            </svg>
+            <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
       </div>
+
+      <!-- Nav móvil -->
+      <nav id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-4">
+        {navLinks.map(({ href, label }) => {
+          const isActive = pathname === href || pathname.startsWith(href + '/');
+          return (
+            <a href={href} class={`text-sm transition-colors ${isActive ? 'text-accent font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-accent'}`}>
+              {label}
+            </a>
+          );
+        })}
+      </nav>
     </header>
 
     <main class="max-w-[800px] mx-auto px-4 py-12">
@@ -118,6 +142,16 @@ const navLinks = [
       document.getElementById('theme-toggle').addEventListener('click', () => {
         const isDark = document.documentElement.classList.toggle('dark');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+
+      const menuToggle = document.getElementById('menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const iconMenu = document.getElementById('icon-menu');
+      const iconClose = document.getElementById('icon-close');
+      menuToggle.addEventListener('click', () => {
+        const open = mobileMenu.classList.toggle('hidden');
+        iconMenu.classList.toggle('hidden', !open);
+        iconClose.classList.toggle('hidden', open);
       });
 
       const btn = document.getElementById('back-to-top');

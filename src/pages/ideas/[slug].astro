@@ -31,12 +31,13 @@ const fmt = (date: Date) =>
   <Breadcrumb crumbs={[{ label: '5 ideas', href: '/ideas' }, { label: `Edición #${edition.data.number}` }]} />
 
   <header class="mb-10">
-    <div class="flex items-baseline gap-3 mb-2">
-      <span class="font-serif text-6xl font-semibold text-accent leading-none">#{edition.data.number}</span>
-      <time class="text-sm text-gray-400">{fmt(edition.data.date)}</time>
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-sm font-medium mb-5">
+      <span>Edición #{edition.data.number}</span>
+      <span class="text-accent/40">·</span>
+      <time>{fmt(edition.data.date)}</time>
     </div>
-    <h1 class="font-serif text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-3">5 ideas</h1>
-    <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed">
+    <h1 class="font-serif text-5xl font-semibold text-gray-900 dark:text-gray-100 mb-4 leading-tight">5 ideas</h1>
+    <p class="text-xl text-gray-500 dark:text-gray-400 leading-relaxed">
       {edition.data.description}
     </p>
     <div class="mt-6 h-px bg-gradient-to-r from-accent/60 to-transparent"></div>
@@ -45,7 +46,7 @@ const fmt = (date: Date) =>
   <ol class="space-y-12">
     {edition.data.items.map((item, i) => (
       <li class="flex gap-5">
-        <div class="shrink-0 w-8 h-8 rounded-full bg-accent/10 text-accent font-serif font-semibold text-sm flex items-center justify-center mt-1">
+        <div class="shrink-0 w-12 h-12 rounded-full bg-accent/10 text-accent font-serif font-semibold text-xl flex items-center justify-center mt-1">
           {i + 1}
         </div>
         <div class="flex-1 min-w-0">

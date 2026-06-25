@@ -38,14 +38,6 @@ const projects = [
     color: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
   },
   {
-    name: 'Proyecto cuatro',
-    description: 'Descripción del proyecto. Qué hace, qué problema resuelve.',
-    url: '#',
-    tag: 'Open source',
-    emoji: '🛠️',
-    color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
-  },
-  {
     name: '5 ideas',
     description: 'Cada semana comparto cinco cosas que encontré interesantes: artículos, herramientas, videos e ideas.',
     url: '/ideas',
@@ -59,10 +51,26 @@ const fmt = (date: Date) =>
   date.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
 ---
 
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up {
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .fade-up:nth-child(1) { animation-delay: 0ms; }
+  .fade-up:nth-child(2) { animation-delay: 80ms; }
+  .fade-up:nth-child(3) { animation-delay: 160ms; }
+  .fade-up:nth-child(4) { animation-delay: 240ms; }
+  .fade-up:nth-child(5) { animation-delay: 320ms; }
+</style>
+
 <Layout title="Hugo" description="Sitio personal de Hugo">
 
   <!-- Hero -->
-  <section class="py-16 mb-4">
+  <section class="py-16 mb-4 fade-up">
     <h1 class="font-serif text-6xl font-semibold mb-5 text-gray-900 dark:text-gray-100 leading-tight">Hugo</h1>
     <p class="text-gray-500 dark:text-gray-400 text-xl leading-relaxed max-w-xl mb-7">
       Escribo sobre tecnología, diseño y software. Aquí comparto proyectos en los que trabajo y artículos sobre lo que aprendo.
@@ -75,7 +83,7 @@ const fmt = (date: Date) =>
   </section>
 
   <!-- Artículos: lista con thumbnail -->
-  <section class="mb-20">
+  <section class="mb-20 fade-up">
     <div class="flex items-center gap-3 mb-8">
       <div class="w-1 h-6 bg-accent rounded-full"></div>
       <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Artículos recientes</h2>
@@ -104,7 +112,7 @@ const fmt = (date: Date) =>
   </section>
 
   <!-- Proyectos: grid -->
-  <section class="mb-20">
+  <section class="mb-20 fade-up">
     <div class="flex items-center gap-3 mb-8">
       <div class="w-1 h-6 bg-accent rounded-full"></div>
       <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Proyectos</h2>
@@ -128,7 +136,7 @@ const fmt = (date: Date) =>
   </section>
 
   <!-- Historias: tarjetas -->
-  <section class="mb-20">
+  <section class="mb-20 fade-up">
     <div class="flex items-center gap-3 mb-8">
       <div class="w-1 h-6 bg-accent rounded-full"></div>
       <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Mis Historias</h2>
