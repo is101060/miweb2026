@@ -9,6 +9,7 @@ const { title, description = 'Sitio personal de Hugo', image, type = 'website' }
 const siteUrl = 'https://hugomx.com';
 const ogImage = image ?? `${siteUrl}/og-default.svg`;
 
+import { SOCIAL_URLS } from '../config';
 const pathname = Astro.url.pathname;
 const navLinks = [
   { href: '/articles', label: 'Artículos' },
@@ -116,9 +117,9 @@ const navLinks = [
       <span>© {new Date().getFullYear()} Hugo</span>
       <nav class="flex gap-4 items-center">
         <a href="/now" class="hover:text-accent transition-colors">Ahora</a>
-        <a href="https://linkedin.com/in/tu-usuario" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">LinkedIn</a>
-        <a href="https://instagram.com/tu-usuario" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">Instagram</a>
-        <a href="https://substack.com/@tu-usuario" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">Substack</a>
+        <a href={SOCIAL_URLS.linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">LinkedIn</a>
+        <a href={SOCIAL_URLS.instagram} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">Instagram</a>
+        <a href={SOCIAL_URLS.substack} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">Substack</a>
         <a href="/rss.xml" title="Feed RSS" class="hover:text-accent transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>

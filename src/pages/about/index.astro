@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { SOCIAL_URLS } from '../../config';
 
 const timeline = [
   { year: '2024 — hoy', role: '[Tu rol actual]', place: '[Empresa o proyecto]', description: 'Describe qué haces actualmente.' },
@@ -72,9 +73,9 @@ const interests = ['Tecnología', 'Diseño', 'Libros', 'Software', 'Escritura', 
     </div>
     <p class="text-gray-600 dark:text-gray-400 mb-4">Puedes encontrarme en:</p>
     <div class="flex gap-4 text-sm">
-      <a href="https://linkedin.com/in/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">LinkedIn</a>
-      <a href="https://instagram.com/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Instagram</a>
-      <a href="https://substack.com/@tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Substack</a>
+      <a href={SOCIAL_URLS.linkedin} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">LinkedIn</a>
+      <a href={SOCIAL_URLS.instagram} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Instagram</a>
+      <a href={SOCIAL_URLS.substack} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Substack</a>
     </div>
   </section>
 </Layout>

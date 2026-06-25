@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { getCollection, render } from 'astro:content';
+import { SOCIAL_URLS } from '../../config';
 
 export async function getStaticPaths() {
   const stories = (await getCollection('stories'))
@@ -85,9 +86,9 @@ const fmtShort = (date: Date) =>
             Cosas personales y lo que hago. Si te gustó esta historia, puedes seguirme en redes.
           </p>
           <div class="flex gap-4 text-sm">
-            <a href="https://linkedin.com/in/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">LinkedIn</a>
-            <a href="https://instagram.com/tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Instagram</a>
-            <a href="https://substack.com/@tu-usuario" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Substack</a>
+            <a href={SOCIAL_URLS.linkedin} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">LinkedIn</a>
+            <a href={SOCIAL_URLS.instagram} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Instagram</a>
+            <a href={SOCIAL_URLS.substack} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-accent transition-colors">Substack</a>
           </div>
         </div>
       </div>
