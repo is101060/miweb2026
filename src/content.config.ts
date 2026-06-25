@@ -52,4 +52,22 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { articles, stories, bookReviews, projects };
+const ideas = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/ideas' }),
+  schema: z.object({
+    number: z.number(),
+    date: z.date(),
+    description: z.string(),
+    items: z.array(z.object({
+      type: z.enum(['idea', 'artículo', 'video', 'herramienta', 'libro']),
+      title: z.string(),
+      description: z.string(),
+      url: z.string().optional(),
+      source: z.string().optional(),
+      videoId: z.string().optional(),
+      image: z.string().optional(),
+    })).length(5),
+  }),
+});
+
+export const collections = { articles, stories, bookReviews, projects, ideas };

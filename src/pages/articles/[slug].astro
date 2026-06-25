@@ -35,6 +35,23 @@ const fmtShort = (date: Date) =>
 ---
 
 <Layout title={`${article.data.title} — Hugo`} description={article.data.description} image={article.data.image} type="article">
+  <!-- Barra de progreso de lectura -->
+  <div id="reading-progress" class="fixed top-0 left-0 h-0.5 bg-accent z-50 transition-none" style="width:0%"></div>
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function () {
+      const bar = document.getElementById('reading-progress');
+      const article = document.querySelector('article');
+      if (!bar || !article) return;
+      window.addEventListener('scroll', function () {
+        const articleTop = article.offsetTop;
+        const articleHeight = article.offsetHeight;
+        const scrolled = window.scrollY - articleTop;
+        const pct = Math.min(100, Math.max(0, (scrolled / (articleHeight - window.innerHeight)) * 100));
+        bar.style.width = pct + '%';
+      }, { passive: true });
+    });
+  </script>
+
   <Breadcrumb crumbs={[{ label: 'Artículos', href: '/articles' }, { label: article.data.title }]} />
 
   <article>

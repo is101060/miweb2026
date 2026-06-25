@@ -1,0 +1,136 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import NewsletterCTA from '../../components/NewsletterCTA.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const editions = (await getCollection('ideas'))
+    .sort((a, b) => b.data.number - a.data.number);
+
+  return editions.map((edition, i) => ({
+    params: { slug: edition.id },
+    props: {
+      edition,
+      prev: editions[i + 1] ?? null,
+      next: editions[i - 1] ?? null,
+    },
+  }));
+}
+
+const { edition, prev, next } = Astro.props;
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Layout
+  title={`5 ideas — Edición #${edition.data.number} — Hugo`}
+  description={edition.data.description}
+>
+  <Breadcrumb crumbs={[{ label: '5 ideas', href: '/ideas' }, { label: `Edición #${edition.data.number}` }]} />
+
+  <header class="mb-10">
+    <div class="flex items-baseline gap-3 mb-2">
+      <span class="font-serif text-6xl font-semibold text-accent leading-none">#{edition.data.number}</span>
+      <time class="text-sm text-gray-400">{fmt(edition.data.date)}</time>
+    </div>
+    <h1 class="font-serif text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-3">5 ideas</h1>
+    <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed">
+      {edition.data.description}
+    </p>
+    <div class="mt-6 h-px bg-gradient-to-r from-accent/60 to-transparent"></div>
+  </header>
+
+  <ol class="space-y-12">
+    {edition.data.items.map((item, i) => (
+      <li class="flex gap-5">
+        <div class="shrink-0 w-8 h-8 rounded-full bg-accent/10 text-accent font-serif font-semibold text-sm flex items-center justify-center mt-1">
+          {i + 1}
+        </div>
+        <div class="flex-1 min-w-0">
+          {item.source && (
+            <p class="text-xs text-gray-400 mb-2 uppercase tracking-wide">{item.source}</p>
+          )}
+
+          <p class="font-semibold text-gray-900 dark:text-gray-100 leading-snug mb-3 text-[1.05rem]">
+            {item.title}
+          </p>
+
+          {/* Imagen 16:9 */}
+          {item.image && (
+            <figure class="mb-4 rounded-xl overflow-hidden aspect-video bg-gray-100 dark:bg-gray-800">
+              <img src={item.image} alt={item.title} class="w-full h-full object-cover" />
+            </figure>
+          )}
+
+          {/* YouTube embed 16:9 */}
+          {item.videoId && (
+            <div class="mb-4 rounded-xl overflow-hidden aspect-video bg-gray-100 dark:bg-gray-800">
+              <iframe
+                src={`https://www.youtube.com/embed/${item.videoId}`}
+                title={item.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                class="w-full h-full"
+              ></iframe>
+            </div>
+          )}
+
+          <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-[0.95rem] mb-4">
+            {item.description}
+          </p>
+
+          {/* Botón para artículos y herramientas */}
+          {item.url && !item.videoId && (
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent text-white text-sm font-medium hover:bg-accent/90 transition-colors"
+            >
+              {item.type === 'herramienta' ? 'Ver herramienta' : 'Leer artículo'}
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            </a>
+          )}
+
+          {item.url && item.videoId && (
+            <a href={item.url} target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-sm text-accent hover:underline">
+              Ver en YouTube →
+            </a>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <div class="mt-16">
+    <NewsletterCTA />
+  </div>
+
+  {(prev || next) && (
+    <nav class="mt-10 grid gap-3 sm:grid-cols-2 border-t border-gray-100 dark:border-gray-800 pt-8">
+      {prev ? (
+        <a href={`/ideas/${prev.id}`}
+          class="group border border-gray-200 dark:border-gray-800 rounded-xl p-4 hover:border-accent transition-colors">
+          <span class="text-xs text-gray-400 mb-1 block">← Anterior</span>
+          <span class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-accent transition-colors">
+            Edición #{prev.data.number}
+          </span>
+        </a>
+      ) : <div />}
+      {next && (
+        <a href={`/ideas/${next.id}`}
+          class="group border border-gray-200 dark:border-gray-800 rounded-xl p-4 hover:border-accent transition-colors sm:text-right">
+          <span class="text-xs text-gray-400 mb-1 block">Siguiente →</span>
+          <span class="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-accent transition-colors">
+            Edición #{next.data.number}
+          </span>
+        </a>
+      )}
+    </nav>
+  )}
+</Layout>

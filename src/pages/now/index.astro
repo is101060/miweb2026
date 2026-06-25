@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const updated = '24 de junio de 2026';
+---
+
+<Layout
+  title="Ahora — Hugo"
+  description="Qué estoy haciendo, leyendo y pensando ahora mismo."
+>
+  <Breadcrumb crumbs={[{ label: 'Ahora' }]} />
+
+  <header class="mb-10">
+    <h1 class="font-serif text-4xl font-semibold mb-3 text-gray-900 dark:text-gray-100">Ahora</h1>
+    <p class="text-sm text-gray-400">Actualizado el {updated} · <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">¿Qué es una página /now?</a></p>
+    <div class="mt-6 h-px bg-gradient-to-r from-accent/60 to-transparent"></div>
+  </header>
+
+  <div class="space-y-12 text-gray-700 dark:text-gray-300">
+
+    <!-- Ubicación y contexto -->
+    <section>
+      <h2 class="font-serif text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+        <span class="w-1 h-5 bg-accent rounded-full inline-block"></span>
+        Dónde estoy
+      </h2>
+      <p class="leading-relaxed">
+        En Ciudad de México, trabajando desde casa la mayor parte del tiempo.
+        El clima sigue siendo impredecible y el tráfico sigue siendo terrible.
+      </p>
+    </section>
+
+    <!-- Trabajo -->
+    <section>
+      <h2 class="font-serif text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+        <span class="w-1 h-5 bg-accent rounded-full inline-block"></span>
+        En qué estoy trabajando
+      </h2>
+      <ul class="space-y-3 leading-relaxed">
+        <li class="flex gap-3">
+          <span class="text-accent mt-1">→</span>
+          <span>Construyendo este sitio personal — la idea es que sea un lugar donde acumule lo que pienso, leo y hago a lo largo del tiempo.</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-accent mt-1">→</span>
+          <span>Explorando cómo hacer más útil y sostenible el proceso de escribir en público.</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-accent mt-1">→</span>
+          <span>Algunos proyectos de software que iré publicando aquí cuando estén listos para mostrarse.</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Leyendo -->
+    <section>
+      <h2 class="font-serif text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+        <span class="w-1 h-5 bg-accent rounded-full inline-block"></span>
+        Qué estoy leyendo
+      </h2>
+      <ul class="space-y-3 leading-relaxed">
+        <li class="flex gap-3">
+          <span class="text-accent mt-1">→</span>
+          <div>
+            <span class="font-medium text-gray-900 dark:text-gray-100">El nombre del viento</span>
+            <span class="text-gray-500"> — Patrick Rothfuss</span>
+            <p class="text-sm text-gray-400 mt-0.5">Tardé demasiado en empezarlo. Ya entiendo por qué la gente lo recomienda tanto.</p>
+          </div>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-accent mt-1">→</span>
+          <div>
+            <span class="font-medium text-gray-900 dark:text-gray-100">Artículos varios</span>
+            <span class="text-gray-500"> — en la web</span>
+            <p class="text-sm text-gray-400 mt-0.5">Temas recurrentes últimamente: diseño de información, escritura técnica y longevidad del software.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Pensando -->
+    <section>
+      <h2 class="font-serif text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+        <span class="w-1 h-5 bg-accent rounded-full inline-block"></span>
+        En qué estoy pensando
+      </h2>
+      <ul class="space-y-3 leading-relaxed">
+        <li class="flex gap-3">
+          <span class="text-accent mt-1">→</span>
+          <span>Cómo separar el trabajo de la identidad sin perder motivación en el proceso.</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-accent mt-1">→</span>
+          <span>El valor de publicar cosas incompletas versus esperar a tener algo "terminado".</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-accent mt-1">→</span>
+          <span>Si la IA va a cambiar la forma en que aprendemos a programar o solo va a cambiar a quiénes contratamos para hacerlo.</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Fuera del trabajo -->
+    <section>
+      <h2 class="font-serif text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+        <span class="w-1 h-5 bg-accent rounded-full inline-block"></span>
+        Fuera del trabajo
+      </h2>
+      <p class="leading-relaxed">
+        Intentando caminar más. Viendo menos series y leyendo más libros.
+        Tomando café en lugares donde no hay WiFi para obligarme a pensar sin distracciones.
+      </p>
+    </section>
+
+  </div>
+</Layout>
