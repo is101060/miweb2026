@@ -7,7 +7,13 @@
       "Bash(npm run *)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(curl -s http://localhost:4321/articles/primer-articulo)",
+      "Bash(curl -s -I http://localhost:4321/articles/primer-articulo)",
+      "Bash(npx astro *)"
     ]
   }
 }

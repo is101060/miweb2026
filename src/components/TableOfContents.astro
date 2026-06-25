@@ -1,20 +1,32 @@
 ---
-// Se genera client-side desde los headings del DOM
 ---
 
-<nav id="toc" class="hidden xl:block fixed top-32 left-[calc(50%+420px)] w-52 text-sm">
+<nav id="toc" class="text-sm" style="display:none">
   <p class="text-xs font-medium tracking-widest uppercase text-gray-400 mb-3">En este artículo</p>
   <ul id="toc-list" class="space-y-2"></ul>
 </nav>
 
+<style>
+  #toc {
+    position: fixed;
+    top: 8rem;
+    left: calc(50% + 420px);
+    width: 13rem;
+  }
+  @media (max-width: 1200px) {
+    #toc { display: none !important; }
+  }
+</style>
+
 <script is:inline>
+  document.addEventListener('DOMContentLoaded', function () {
   const article = document.querySelector('article');
   const tocList = document.getElementById('toc-list');
   const toc = document.getElementById('toc');
 
   if (article && tocList) {
     const headings = article.querySelectorAll('h2, h3');
-    if (headings.length < 2) { toc.classList.add('hidden'); }
+    if (headings.length < 2) return;
 
     headings.forEach((h, i) => {
       if (!h.id) h.id = `heading-${i}`;
@@ -22,23 +34,28 @@
       const a = document.createElement('a');
       a.href = `#${h.id}`;
       a.textContent = h.textContent;
-      a.className = `block text-gray-400 hover:text-accent transition-colors leading-snug ${h.tagName === 'H3' ? 'pl-3 text-xs' : ''}`;
+      a.style.cssText = 'display:block; color:#9ca3af; transition:color 0.15s; line-height:1.4;';
+      if (h.tagName === 'H3') { a.style.paddingLeft = '0.75rem'; a.style.fontSize = '0.75rem'; }
+      a.addEventListener('mouseenter', () => a.style.color = '#059669');
+      a.addEventListener('mouseleave', () => { if (!a.classList.contains('toc-active')) a.style.color = '#9ca3af'; });
       li.appendChild(a);
       tocList.appendChild(li);
     });
 
-    // Resaltar heading activo
+    toc.style.display = 'block';
+
     const links = tocList.querySelectorAll('a');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          links.forEach((l) => l.classList.remove('text-accent', '!text-accent'));
+          links.forEach((l) => { l.style.color = '#9ca3af'; l.classList.remove('toc-active'); });
           const active = tocList.querySelector(`a[href="#${entry.target.id}"]`);
-          if (active) active.classList.add('text-accent');
+          if (active) { active.style.color = '#059669'; active.classList.add('toc-active'); }
         }
       });
     }, { rootMargin: '0px 0px -70% 0px' });
 
     headings.forEach((h) => observer.observe(h));
   }
+  });
 </script>
