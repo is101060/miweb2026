@@ -85,10 +85,9 @@ const fmt = (date: Date) =>
 
   <!-- Artículos: lista con thumbnail -->
   <section class="mb-20 fade-up">
-    <div class="flex items-center gap-3 mb-8">
-      <div class="w-1 h-6 bg-accent rounded-full"></div>
+    <div class="flex items-center justify-between mb-8">
       <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Artículos recientes</h2>
-      <a href="/articles" class="text-sm text-accent hover:underline ml-auto">Ver todos →</a>
+      <a href="/articles" class="text-sm text-accent hover:underline">Ver todos →</a>
     </div>
     <ul class="space-y-1">
       {articles.map((a) => (
@@ -114,10 +113,9 @@ const fmt = (date: Date) =>
 
   <!-- Proyectos: grid -->
   <section class="mb-20 fade-up">
-    <div class="flex items-center gap-3 mb-8">
-      <div class="w-1 h-6 bg-accent rounded-full"></div>
+    <div class="flex items-center justify-between mb-8">
       <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Proyectos</h2>
-      <a href="/projects" class="text-sm text-accent hover:underline ml-auto">Ver todos →</a>
+      <a href="/projects" class="text-sm text-accent hover:underline">Ver todos →</a>
     </div>
     <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {projects.map((p) => (
@@ -138,10 +136,9 @@ const fmt = (date: Date) =>
 
   <!-- Historias: tarjetas -->
   <section class="mb-20 fade-up">
-    <div class="flex items-center gap-3 mb-8">
-      <div class="w-1 h-6 bg-accent rounded-full"></div>
+    <div class="flex items-center justify-between mb-8">
       <h2 class="font-serif text-2xl font-semibold text-gray-900 dark:text-gray-100">Mis Historias</h2>
-      <a href="/stories" class="text-sm text-accent hover:underline ml-auto">Ver todas →</a>
+      <a href="/stories" class="text-sm text-accent hover:underline">Ver todas →</a>
     </div>
     <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {stories.map((s) => (
